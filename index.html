@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Casa Santos – Algarve, Ruhe, Entspannung</title>
+  <meta name="description" content="Casa Santos in der Algarve: Ruhe & Rückzug mit lichtdurchfluteten Räumen, mediterranem Garten und nah am Meer. Jetzt Eindrücke gewinnen und anfragen." />
+  <meta name="theme-color" content="#e8efe9" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Casa Santos – Ruhe, Licht & Algarve" />
+  <meta property="og:description" content="Hochwertige Fotoseite mit wenig Text. Ein Ort zum Durchatmen – dein Retreat an der Algarve." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/og-cover.jpg" />
+  <meta property="og:url" content="https://www.casa-santos.de" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"> -->
+  
+  <!-- Fonts: Caveat (Headlines) + Work Sans (Fließtext) -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Hauptnavigation">
+      <div class="nav-left" aria-hidden="true"></div>
+
+      <!-- Mitte: zentriertes Logo -->
+      <a class="brand-center" href="#top" aria-label="Casa Santos Startseite">
+        <img src="assets/img/icons/Logo1b2a2f.svg" class="cslogo" height="63" alt="Casa-Santos Logo">
+      </a>
+
+      <!-- Rechte Zone: Toggle + Untermenü -->
+      <div class="nav-right">
+        <button class="nav-toggle" aria-label="Menü öffnen" aria-controls="primary-menu" aria-expanded="false">
+          <span class="nav-toggle-bar" aria-hidden="true"></span>
+        </button>
+        <div id="primary-menu" class="nav-links" hidden>
+          <a href="#haus">Haus</a>
+          <a href="#galerie">Galerie</a>
+          <a href="#kontakt" class="btn">Anfrage</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <!-- Slideshow-Hintergrund -->
+    <div class="hero-slides" aria-label="Hero Slideshow">
+      <!-- Slide 1 -->
+      <figure class="hero-slide is-active">
+        <picture>
+          <!-- Mobile-Crop nur für kleine Screens -->
+          <source
+            media="(max-width: 600px)"
+            srcset="
+              assets/img/hero1-m-800.jpg   800w,
+              assets/img/hero1-m-1280.jpg 1280w"
+            sizes="100vw">
+
+          <!-- Tablet/Desktop (Landscape) -->
+          <img
+            src="assets/img/hero1-1920.jpg"
+            srcset="
+              assets/img/hero1-800.jpg   800w,
+              assets/img/hero1-1280.jpg 1280w,
+              assets/img/hero1-1920.jpg 1920w"
+            sizes="100vw"
+            alt="Casa Santos – Haus mit seitlicher Sonneneinstrahlung"
+            decoding="async"
+            fetchpriority="high">
+        </picture>
+      </figure>
+
+      <!-- Slide 2 -->
+      <figure class="hero-slide">
+        <picture>
+          <source
+            media="(max-width: 600px)"
+            srcset="
+              assets/img/hero2-m-800.jpg   800w,
+              assets/img/hero2-m-1280.jpg 1280w"
+            sizes="100vw">
+
+          <img
+            src="assets/img/hero2-1920.jpg"
+            srcset="
+              assets/img/hero2-800.jpg   800w,
+              assets/img/hero2-1280.jpg 1280w,
+              assets/img/hero2-1920.jpg 1920w"
+            sizes="100vw"
+            alt="Casa Santos – Haus mit Palmen im Vordergrund"
+            loading="lazy" decoding="async">
+        </picture>
+      </figure>
+
+      <!-- Slide 3 -->
+      <figure class="hero-slide">
+        <picture>
+          <source
+            media="(max-width: 600px)"
+            srcset="
+              assets/img/hero3-m-800.jpg   800w,
+              assets/img/hero3-m-1280.jpg 1280w"
+            sizes="100vw">
+
+          <img
+            src="assets/img/hero3-1920.jpg"
+            srcset="
+              assets/img/hero3-800.jpg   800w,
+              assets/img/hero3-1280.jpg 1280w,
+              assets/img/hero3-1920.jpg 1920w"
+            sizes="100vw"
+            alt="Casa Santos – Algarve Strand, Felsen und Meer"
+            loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <!-- Weitere Slides? -> gleiches Muster -->
+    </div>
+
+    <!-- Pfeile (deine aktuellen SVGs bleiben) -->
+    <div class="hero-nav" aria-label="Hero Navigation">
+      <button class="hero-arrow hero-prev" aria-label="Vorheriges Bild" type="button">
+        <!-- dein SVG-Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="hero-arrow hero-next" aria-label="Nächstes Bild" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Dots (werden per JS befüllt) -->
+    <div class="hero-dots" role="tablist" aria-label="Hero Bilder"></div>
+
+    <!-- Overlay-Content -->
+    <div class="hero-content container">
+      <div>
+        <img src="assets/img/icons/logo-hero-white.svg" class="hero-logo" alt="Casa-Santos Logo" />
+        <h1>Willkommen im Urlaub</h1>
+        <div class="cta-row">
+          <a href="#galerie" class="btn btn-primary">Bilder ansehen</a>
+          <a href="#kontakt" class="btn">Jetzt anfragen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section id="haus" class="intro">
+    <div class="container">
+      <div class="reveal">
+        <h2>Einfach ankommen</h2>
+        <p class="lead">Casa Santos steht für Weite, Ruhe und mediterrane Gelassenheit. Wenig Worte – starke Bilder. Ideal zum Durchatmen, Arbeiten im Grünen oder als ruhiger Ausgangspunkt für Küste & Hinterland.</p>
+      </div>
+      <div class="usp-grid">
+        <article class="card reveal">
+          <h3>Haus mit typischem Algarve Charakter</h3>
+          <p class="muted">Helle Zimmer, reduziert eingerichtet. Alles, was man braucht, nichts, was ablenkt.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Mediterraner Bio-Garten</h3>
+          <p class="muted">Zitronen, Weintrauben, Mangos und schattige Plätze. Frühstück im Freien, Abende mit warmem Licht.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Meer & Umgebung</h3>
+          <p class="muted">Strände, Märkte, Trails – leicht erreichbar und doch fern vom Trubel.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galerie -->
+  <section id="galerie" class="gallery" aria-label="Galerie">
+    <div class="container">
+      <h2 class="reveal">Eindrücke</h2>
+      <div class="grid" style="margin-top: 1rem;">
+        <figure class="card-figure">
+          <div class="tile-slider" aria-label="Galerie-Slideshow: Sonnenauf- & Untergänge">
+            <img class="tile-slide is-active" src="assets/img/gallery/haus-01.jpg" alt="Haus vorne beim Sonnenuntergang" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/haus-02.jpg" alt="Haus seitlich beim Sonnenuntergang" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/haus-03.jpg" alt="Blick von der Terasse beim Sonnenaufgang" loading="lazy" decoding="async">
+
+            <!-- Pfeile -->
+            <button class="tile-arrow tile-prev" aria-label="Vorheriges Bild" type="button">‹</button>
+            <button class="tile-arrow tile-next" aria-label="Nächstes Bild" type="button">›</button>
+
+            <!-- Dots -->
+            <div class="tile-dots" role="tablist" aria-label="Bilder auswählen"></div>
+          </div>
+
+          <!-- Beschriftung unterhalb -->
+          <figcaption class="tile-caption-text">Sonnenauf- & Untergänge</figcaption>
+        </figure>
+
+        <figure class="reveal"><img src="assets/img/gallery/02.jpg" loading="lazy" decoding="async" alt="Terrasse mit Sonnenstuhl"><figcaption>Entspannung</figcaption></figure>
+        
+        <figure class="card-figure">
+          <div class="tile-slider" aria-label="Galerie-Slideshow: Schlafräume">
+            <img class="tile-slide is-active" src="assets/img/gallery/schlafen-01.jpg" alt="Bett mit Ausblick" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/schlafen-02.jpg" alt="Doppelbett in der Vorderansicht" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/schlafen-03.jpg" alt="2 separate Betten" loading="lazy" decoding="async">
+
+            <!-- Pfeile -->
+            <button class="tile-arrow tile-prev" aria-label="Vorheriges Bild" type="button">‹</button>
+            <button class="tile-arrow tile-next" aria-label="Nächstes Bild" type="button">›</button>
+
+            <!-- Dots -->
+            <div class="tile-dots" role="tablist" aria-label="Bilder auswählen"></div>
+          </div>
+
+          <!-- Beschriftung unterhalb -->
+          <figcaption class="tile-caption-text">Schlafräume</figcaption>
+        </figure>
+
+        <figure class="card-figure">
+          <div class="tile-slider" aria-label="Galerie-Slideshow: Badezimmer">
+            <img class="tile-slide is-active" src="assets/img/gallery/badezimmer-01.jpg" alt="Handtuch vor Waschbecken" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/badezimmer-02.jpg" alt="Modernes gefließtes Bad mit Waschbecken" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/badezimmer-03.jpg" alt="Modernes gefließtes Bad mit Massagedusche" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/badezimmer-04.jpg" alt="Waschmaschine" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/badezimmer-05.jpg" alt="Dusche" loading="lazy" decoding="async">
+
+            <!-- Pfeile -->
+            <button class="tile-arrow tile-prev" aria-label="Vorheriges Bild" type="button">‹</button>
+            <button class="tile-arrow tile-next" aria-label="Nächstes Bild" type="button">›</button>
+
+            <!-- Dots -->
+            <div class="tile-dots" role="tablist" aria-label="Bilder auswählen"></div>
+          </div>
+
+          <!-- Beschriftung unterhalb -->
+          <figcaption class="tile-caption-text">Badezimmer</figcaption>
+        </figure>
+
+        <figure class="card-figure">
+          <div class="tile-slider" aria-label="Galerie-Slideshow: Bio-Garten">
+            <img class="tile-slide is-active" src="assets/img/gallery/garten-01.jpg" alt="Zitronen im Baum" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/garten-02.jpg" alt="Weintrauben" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/garten-03.jpg" alt="Mangos" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/garten-04.jpg" alt="Zitronenbaum" loading="lazy" decoding="async">
+
+            <!-- Pfeile -->
+            <button class="tile-arrow tile-prev" aria-label="Vorheriges Bild" type="button">‹</button>
+            <button class="tile-arrow tile-next" aria-label="Nächstes Bild" type="button">›</button>
+
+            <!-- Dots -->
+            <div class="tile-dots" role="tablist" aria-label="Bilder auswählen"></div>
+          </div>
+
+          <!-- Beschriftung unterhalb -->
+          <figcaption class="tile-caption-text">Bio-Garten</figcaption>
+        </figure>
+
+        <figure class="card-figure">
+          <div class="tile-slider" aria-label="Galerie-Slideshow: Strände in der Umgebung">
+            <img class="tile-slide is-active" src="assets/img/gallery/strand-01.jpg" alt="Strand Sonnenuntergang" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/strand-02.jpg" alt="Leerer Strand, Sonne, Felsen" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/strand-03.jpg" alt="Strand leer" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/strand-04.jpg" alt="Strand" loading="lazy" decoding="async">
+            <img class="tile-slide" src="assets/img/gallery/strand-05.jpg" alt="Strand Sonnenuntergang" loading="lazy" decoding="async">
+
+            <!-- Pfeile -->
+            <button class="tile-arrow tile-prev" aria-label="Vorheriges Bild" type="button">‹</button>
+            <button class="tile-arrow tile-next" aria-label="Nächstes Bild" type="button">›</button>
+
+            <!-- Dots -->
+            <div class="tile-dots" role="tablist" aria-label="Bilder auswählen"></div>
+          </div>
+
+          <!-- Beschriftung unterhalb -->
+          <figcaption class="tile-caption-text">Strände in der Umgebung</figcaption>
+        </figure>
+      
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section id="kontakt" class="callout" aria-label="Kontakt">
+    <div class="container">
+      <div class="panel reveal">
+        <h2>Termine & Verfügbarkeit</h2>
+        <p>Schreib kurz, wann du kommen möchtest – wir melden uns zeitnah.</p>
+        <div class="cta-row" style="justify-content:center;">
+          <a class="btn btn-primary" href="mailto:hello@casa-santos.de?subject=Anfrage%20Casa%20Santos">Per E-Mail anfragen</a>
+          <a class="btn" href="#galerie">Noch mehr Bilder</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-row">
+      <a class="brand" href="#top" aria-label="Nach oben">
+        <img src="assets/img/icons/Logo1b2a2f.svg" height="42" alt="Casa-Santos Logo">
+      </a>
+      <div class="tiny">© <span id="y"></span> Casa Santos · Algarve · Portugal · <a href="mailto:hello@casa-santos.de">hello@casa-santos.de</a></div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

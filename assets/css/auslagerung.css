@@ -1,0 +1,45 @@
+/* ===== Hero Dots ===== */
+.hero-dots{
+  position:absolute;
+  left:50%;
+  bottom:16px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  z-index:4; /* über Verlauf & Slides */
+}
+.hero-dot{
+  width:10px;height:10px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.6);
+  border:1px solid rgba(0,0,0,0.15);
+  cursor:pointer;
+  transition:transform .2s ease, background .2s ease, opacity .2s ease;
+}
+.hero-dot:hover{ transform:scale(1.2); }
+.hero-dot:focus-visible{ outline:3px solid rgba(255,255,255,.9); outline-offset:2px; }
+.hero-dot[aria-current="true"]{ background:rgba(255,255,255,0.95); }
+
+/* Desktop: Dots leicht eingeblendet, bei Hover etwas klarer */
+@media (hover:hover){
+  .hero-dots .hero-dot{ opacity:.9; }
+  .hero:hover .hero-dots .hero-dot{ opacity:1; }
+}
+
+/* Mobile: etwas größer für bessere Trefffläche */
+@media (max-width:600px){
+  .hero-dot{ width:12px; height:12px; }
+}
+
+NEUUU
+
+/* Header-Logo unsichtbar, bis gescrollt */
+.brand-center .cslogo {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Sobald Header die Klasse .scrolled bekommt → Logo einblenden */
+.site-header.scrolled .brand-center .cslogo {
+  opacity: 1;
+}
