@@ -1,39 +1,51 @@
-// Header Blur bei Scroll
+/* =========================================================
+   Header: Blur/Farbe beim Scroll
+   ========================================================= */
 const header = document.querySelector('.site-header');
 const onScroll = () => {
+  if (!header) return;
   if (window.scrollY > 10) header.classList.add('scrolled');
   else header.classList.remove('scrolled');
 };
 document.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-// Reveal-Animation
+/* =========================================================
+   Reveal-Animation (einmaliges Einblenden)
+   ========================================================= */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); }
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      observer.unobserve(e.target);
+    }
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Jahr im Footer
-document.getElementById('y').textContent = new Date().getFullYear();
+/* Jahreszahl im Footer */
+const yEl = document.getElementById('y');
+if (yEl) yEl.textContent = new Date().getFullYear();
 
-// Hamburger-Menü (mobil)
+/* =========================================================
+   Hamburger-Menü (Mobil)
+   ========================================================= */
 (() => {
   const toggle = document.querySelector('.nav-toggle');
   const menu   = document.getElementById('primary-menu');
-
   if (!toggle || !menu) return;
 
   const open = () => {
     toggle.setAttribute('aria-expanded', 'true');
     menu.hidden = false;
-    document.body.style.overflow = 'hidden'; // optional: Scroll sperren, solange offen
+    menu.setAttribute('data-open', 'true');  // für CSS-Animation
+    document.body.style.overflow = 'hidden'; // Scroll sperren
   };
 
   const close = () => {
     toggle.setAttribute('aria-expanded', 'false');
     menu.hidden = true;
+    menu.removeAttribute('data-open');
     document.body.style.overflow = '';
   };
 
@@ -42,7 +54,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
     expanded ? close() : open();
   });
 
-  // Schließen bei Klick auf Link
+  // Klick auf Link schließt das Menü
   menu.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (a) close();
@@ -59,33 +71,30 @@ document.getElementById('y').textContent = new Date().getFullYear();
   });
 })();
 
-// ===== Hero Slideshow =====
+/* =========================================================
+   Hero-Slideshow (Autoplay + Pfeile + Dots + Touch)
+   ========================================================= */
 (() => {
   const hero = document.querySelector('.hero');
   const slides = hero?.querySelectorAll('.hero-slide');
   if (!hero || !slides || !slides.length) return;
-  const dotsWrap = hero.querySelector('.hero-dots');
 
+  const dotsWrap = hero.querySelector('.hero-dots');
   let i = 0;
-  const DURATION = 6000; // 6s pro Slide
+  const DURATION = 6000;              // 6s pro Slide
   let timer = null;
 
   const setActive = (next) => {
     slides[i].classList.remove('is-active');
     i = (next + slides.length) % slides.length;
     slides[i].classList.add('is-active');
-    // Dots aktualisieren
-    if (dots.length) {
-      dots.forEach((d, idx) => d.setAttribute('aria-current', String(idx === i)));
-    }
+    if (dots.length) dots.forEach((d, idx) => d.setAttribute('aria-current', String(idx === i)));
   };
-
-  console.log('Wechsel auf Slide', i);
 
   const play = () => { stop(); timer = setInterval(() => setActive(i + 1), DURATION); };
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
-  // Dots automatisch erzeugen
+  // Dots erzeugen
   let dots = [];
   if (dotsWrap) {
     dots = Array.from({ length: slides.length }, (_, idx) => {
@@ -101,61 +110,44 @@ document.getElementById('y').textContent = new Date().getFullYear();
     });
   }
 
-  // Autoplay starten
+  // Autoplay starten + pausieren bei Hover/Tabwechsel
   play();
-
-  // Pause bei Hover (Desktop)
   hero.addEventListener('mouseenter', stop);
   hero.addEventListener('mouseleave', play);
+  document.addEventListener('visibilitychange', () => { document.hidden ? stop() : play(); });
 
-  // Pause bei Tab-Wechsel
-  document.addEventListener('visibilitychange', () => {
-    document.hidden ? stop() : play();
-  });
-
-  // Wischen (Touch)
+  // Touch-Wischen (links/rechts)
   let startX = null, startY = null;
-  const onTouchStart = (e) => {
-    const t = e.touches[0];
-    startX = t.clientX; startY = t.clientY;
-    stop();
-  };
-  const onTouchEnd = (e) => {
+  hero.addEventListener('touchstart', (e) => {
+    const t = e.touches[0]; startX = t.clientX; startY = t.clientY; stop();
+  }, { passive: true });
+  hero.addEventListener('touchend', (e) => {
     if (startX === null || startY === null) return play();
     const t = e.changedTouches[0];
-    const dx = t.clientX - startX;
-    const dy = t.clientY - startY;
-    // nur horizontale Wischer beachten
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      setActive(i + (dx < 0 ? 1 : -1));
-    }
-    startX = startY = null;
-    play();
-  };
-  hero.addEventListener('touchstart', onTouchStart, { passive: true });
-  hero.addEventListener('touchend', onTouchEnd);
+    const dx = t.clientX - startX; const dy = t.clientY - startY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) setActive(i + (dx < 0 ? 1 : -1));
+    startX = startY = null; play();
+  });
 
   // Pfeile (manuelle Navigation)
   const prevBtn = hero.querySelector('.hero-prev');
   const nextBtn = hero.querySelector('.hero-next');
-
   const goPrev = () => { stop(); setActive(i - 1); play(); };
   const goNext = () => { stop(); setActive(i + 1); play(); };
-
   prevBtn?.addEventListener('click', goPrev);
   nextBtn?.addEventListener('click', goNext);
 
-  // Tastatur-Support (links/rechts), solange Fokus irgendwo im Hero ist
+  // Tastatur (←/→), solange der Hero den Fokus hat
   hero.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') { goPrev(); }
-    if (e.key === 'ArrowRight') { goNext(); }
+    if (e.key === 'ArrowLeft') goPrev();
+    if (e.key === 'ArrowRight') goNext();
   });
-
-  // Damit Arrow-Keys ankommen (Hero fokussierbar machen)
-  hero.setAttribute('tabindex','-1');
+  hero.setAttribute('tabindex','-1');  // fokussierbar machen
 })();
 
-// ===== Gallery Tile Sliders (leichtgewichtig, ohne Autoplay) =====
+/* =========================================================
+   Galerie: Tile-Slider (ohne Autoplay)
+   ========================================================= */
 (() => {
   const tiles = document.querySelectorAll('.tile-slider');
   if (!tiles.length) return;
@@ -165,12 +157,10 @@ document.getElementById('y').textContent = new Date().getFullYear();
     if (slides.length < 2) return; // kein Slider nötig
 
     let i = 0;
-
     const setActive = (next) => {
       slides[i].classList.remove('is-active');
       i = (next + slides.length) % slides.length;
       slides[i].classList.add('is-active');
-      // Dots sync
       dots.forEach((d, idx) => d.setAttribute('aria-current', String(idx === i)));
     };
 
@@ -199,7 +189,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
       });
     }
 
-    // Swipe (Touch)
+    // Touch-Wischen
     let startX = null, startY = null;
     root.addEventListener('touchstart', (e) => {
       const t = e.touches[0]; startX = t.clientX; startY = t.clientY;
@@ -213,7 +203,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
     });
   };
 
-  // Lazy-Init: erst initialisieren, wenn im Viewport
+  // Lazy-Initialisierung: erst aktivieren, wenn sichtbar
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -224,4 +214,35 @@ document.getElementById('y').textContent = new Date().getFullYear();
   }, { threshold: 0.15 });
 
   tiles.forEach(t => io.observe(t));
+})();
+
+/* =========================================================
+   „Nach oben“ (#top) – sanft scrollen + Menü schließen
+   ========================================================= */
+(() => {
+  const tops = document.querySelectorAll('a[href="#top"]');
+  if (!tops.length) return;
+
+  const closeMenuIfOpen = () => {
+    const toggle = document.querySelector('.nav-toggle');
+    const menu   = document.getElementById('primary-menu');
+    if (!toggle || !menu) return;
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    if (expanded) {
+      toggle.setAttribute('aria-expanded','false');
+      menu.hidden = true;
+      menu.removeAttribute('data-open');
+      document.body.style.overflow = '';
+    }
+  };
+
+  const scrollTop = (e) => {
+    e.preventDefault();
+    closeMenuIfOpen();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Hash entfernen (optional, für sauberen Back-Button)
+    if (history.replaceState) history.replaceState(null, '', ' ');
+  };
+
+  tops.forEach(a => a.addEventListener('click', scrollTop));
 })();
