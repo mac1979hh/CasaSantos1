@@ -1,9 +1,12 @@
-/* =========================
-   Farb- & Typo-Setup
-   ========================= */
+/* =========================================================
+   Design Tokens (Farben, Abstände, Radius, Schatten, Timing)
+   → Nur Ergänzungen – bestehende Werte bleiben erhalten
+   ========================================================= */
 :root{
+  /* Farben */
   --sand:#efe7dd;
-  --sea:#005b95;      /* deine Blautöne beibehalten */
+  --sea:#005b95;
+  --sea-rgb: 0, 91, 149;
   --seatr:#4180a7;
   --seatrtwo:#6e9ab6;
   --olive:#a7c4a0;
@@ -11,609 +14,372 @@
   --sky:#e8f3f8;
   --stone:#4b4b4b;
   --white:#fff;
-  --shadow:0 10px 30px rgba(0,0,0,.08);
 
+  /* Radius & Schatten */
   --radius:18px;
+  --radius-sm:12px;
+  --radius-lg:24px;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
+  --shadow-lg:0 18px 40px rgba(0,0,0,.12);
+
+  /* Container & Spacing */
   --container:1200px;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+
+  /* Timing & Easing */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --t-fast: 150ms;
+  --t-base: 300ms;
+
+  /* Z-Index Map */
+  --z-header: 1000;
+  --z-hero-ui: 3;
+  --z-hero-slides: 0;
 }
 
-html{scroll-behavior:smooth}
+/* =========================================================
+   Basis: Typo, Body, Container
+   ========================================================= */
+html{ scroll-behavior:smooth; }
 body{
   margin:0;
-  /* font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"; */
-  font-family: 'Work Sans', sans-serif;
+  font-family:'Work Sans', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", sans-serif;
   color:var(--stone);
   background:var(--white);
   line-height:1.6;
-  letter-spacing: 0.01em
+  letter-spacing:.01em;
 }
-h1,h2,h3{font-family:'Caveat',cursive;letter-spacing:.5px;margin:0 0 .4em}
-h1{font-size:clamp(44px,7vw,84px);font-weight:700}
-h2{font-size:clamp(32px,5vw,52px);font-weight:600}
-h3{font-size:clamp(24px,3.6vw,34px);font-weight:600}
-p{margin:0 0 1rem}
-.container{width:min(100% - 2rem,var(--container));margin-inline:auto;}
+h1,h2,h3{ font-family:'Caveat', cursive; letter-spacing:.5px; margin:0 0 .4em; }
+h1{ font-size:clamp(44px,7vw,84px); font-weight:700; }
+h2{ font-size:clamp(32px,5vw,52px); font-weight:600; }
+h3{ font-size:clamp(24px,3.6vw,34px); font-weight:600; }
+p{ margin:0 0 1rem; }
 
-/* =========================
-   Header (transparent + sticky)
-   ========================= */
+.container{ width:min(100% - 2rem, var(--container)); margin-inline:auto; }
+
+/* Unsichtbarer Top-Anker (nimmt keinen Platz ein) */
+#top{ position:absolute; inset:0 0 auto 0; height:0; }
+
+/* =========================================================
+   Header / Navigation (transparent → scrolled)
+   ========================================================= */
 .site-header{
-  position:fixed;inset-block-start:0;inset-inline:0;
-  z-index:1000;padding:.8rem 1rem;
-  background:transparent;border-bottom:1px solid transparent;
-  transition:backdrop-filter .3s ease,background-color .3s ease,border-color .3s ease;
+  position:fixed; inset-block-start:0; inset-inline:0;
+  z-index:var(--z-header); padding:.8rem 1rem;
+  background:transparent; border-bottom:1px solid transparent;
+  transition: backdrop-filter var(--t-base) var(--ease),
+              background-color var(--t-base) var(--ease),
+              border-color var(--t-base) var(--ease),
+              color .2s var(--ease);
 }
 .site-header.scrolled{
   background:rgba(255,255,255,.6);
   backdrop-filter:saturate(140%) blur(8px);
   border-color:rgba(0,0,0,.06);
+  color:var(--stone);
 }
+/* Transparenter Zustand (oben auf dem Hero) → alles weiß erben */
+.site-header:not(.scrolled){ color:#fff; }
 
-/* NAV: 3-spaltiges Grid => Logo zentriert, rechts Menü */
 .nav{
-  display:grid;align-items:center;
-  grid-template-columns:1fr auto 1fr;
-  gap:.5rem;
+  display:grid; align-items:center;
+  grid-template-columns:1fr auto 1fr; gap:.5rem;
 }
-.nav .nav-left{justify-self:start}
-.nav .brand-center{justify-self:center;display:inline-flex;align-items:center;text-decoration:none}
-.cslogo{display:block;height:63px;inline-size:auto}
+.nav .brand-center{ justify-self:center; display:inline-flex; align-items:center; text-decoration:none; }
+.cslogo{ display:block; height:63px; inline-size:auto; }
 
-/* Rechter Bereich enthält Toggle + Links */
-.nav-right{
-  justify-self:end;
-  display:flex;
-  align-items:center;
-  gap:.8rem;
-  position:relative;
-}
+/* Rechte Spalte: Burger + Dropdown */
+.nav-right{ justify-self:start; display:flex; align-items:center; gap:.8rem; position:relative; }
 
-/* Desktop-Links (sichtbar auf großen Screens) */
-.nav .nav-links{
-  display:flex;
-  gap:1.2rem;
-  align-items:center;
-}
-.nav .nav-links a{text-decoration:none;color:inherit;font-weight:500;opacity:.9}
-.nav .nav-links a:hover{opacity:1}
+/* Hauptlinks */
+.nav .nav-links{ display:flex; gap:1.2rem; align-items:center; }
+.nav .nav-links a{ text-decoration:none; color:inherit; font-weight:500; opacity:.9; }
+.nav .nav-links a:hover{ opacity:1; }
 
-/* Buttons */
+/* Buttons (Basis) */
 .btn{
-  appearance:none;
-  border:none;
- background-image:
-    linear-gradient(110deg, rgba(255,255,255,.22), rgba(255,255,255,0) 38%),  /* Highlight von links */
-    linear-gradient(135deg, var(--olivetr), var(--olive));                    /* dein Olive-Verlauf */
-  padding:.65rem 1rem;
-  border-radius:999px;
-  font-weight:600;
-  text-decoration:none;
-  color:#183023;
-  display:inline-flex;
-  align-items:center;
-  gap:.5rem;
-  box-shadow:var(--shadow)
+  appearance:none; border:none; border-radius:999px;
+  padding:.65rem 1rem; font-weight:600; text-decoration:none;
+  display:inline-flex; align-items:center; gap:.5rem;
+  color:#183023; box-shadow:var(--shadow);
+  background-image:
+    linear-gradient(110deg, rgba(255,255,255,.22), rgba(255,255,255,0) 38%),
+    linear-gradient(135deg, var(--olivetr), var(--olive));
+  transition:transform var(--t-fast) var(--ease);
 }
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{color:var(--white);background:linear-gradient(115deg,var(--seatrtwo),var(--seatr),var(--sea));border:none}
+.btn:hover{ transform:translateY(-1px); }
 
-/* Focus sichtbar */
-a:focus-visible,.btn:focus-visible,.nav-toggle:focus-visible{outline:3px solid rgba(0,0,0,.25);outline-offset:2px;border-radius:12px}
+/* Primär (dunkler, kontrastreich) */
+.btn-primary{
+  color:var(--white);
+  background: rgba(0,0,0,.35);
+  border:1px solid var(--white);
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
 
-/* =========================
-   Hamburger (mobil)
-   ========================= */
+/* Sekundär-Variante */
+.btn-secondary{
+  color:var(--stone);
+  background: rgba(167,196,160,.2);
+  border:1px solid var(--stone);
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+
+/* Fokus sichtbar */
+a:focus-visible, .btn:focus-visible, .nav-toggle:focus-visible{
+  outline:3px solid rgba(0,0,0,.25); outline-offset:2px; border-radius:12px;
+}
+
+/* Hamburger (mobil) */
 .nav-toggle{
-  display:none; /* mobil sichtbar */
-  appearance:none;
-  background:transparent;
-  border:0;
-  padding:.3rem;
-  cursor:pointer;
-  border-radius:10px;
-  color:inherit;
+  display:none; appearance:none; background:transparent; border:0; padding:.3rem;
+  cursor:pointer; border-radius:10px; color:inherit;
 }
-.nav-toggle-bar,
-.nav-toggle-bar::before,
-.nav-toggle-bar::after{
-  content:"";
-  display:block;
-  width:26px;
-  height:2px;
-  background:currentColor;
-  transition:transform .25s ease,opacity .25s ease;
+.nav-toggle-bar, .nav-toggle-bar::before, .nav-toggle-bar::after{
+  content:""; display:block; width:26px; height:2px; background:currentColor;
+  transition: transform .25s var(--ease), opacity .25s var(--ease);
 }
-.nav-toggle-bar::before{transform:translateY(-7px)}
-.nav-toggle-bar::after{transform:translateY(5px)}
-/* X-Zustand wenn geöffnet */
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar{transform:rotate(45deg)}
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar::before{transform:rotate(-90deg)}
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar::after{opacity:0;transform:translateY(0)}
+.nav-toggle-bar::before{ transform:translateY(-7px); }
+.nav-toggle-bar::after{ transform:translateY(5px); }
+/* X-Zustand */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar{ transform:rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::before{ transform:rotate(-90deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::after{ opacity:0; transform:translateY(0); }
 
-/* Header-Logo unsichtbar + leicht nach oben verschoben */
-.brand-center .cslogo {
-  opacity: 0;
-  transform: translateY(-8px);   /* leicht nach oben geschoben */
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
+/* Header-Logo: erst beim Scroll einblenden */
+.brand-center .cslogo{ opacity:0; transform:translateY(-8px); transition:opacity .5s var(--ease), transform .5s var(--ease); }
+.site-header.scrolled .brand-center .cslogo{ opacity:1; transform:translateY(0); }
 
-/* Beim Scrollen → Logo einblenden + sanft nach unten gleiten */
-.site-header.scrolled .brand-center .cslogo {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   Hero
-   ========================= */
+/* =========================================================
+   Hero (Fullscreen, Slideshow, Content)
+   ========================================================= */
 .hero{
-  position:relative;height:100svh;min-height:520px;isolation:isolate;overflow:hidden;background:var(--sky);
+  position:relative; height:100svh; min-height:520px;
+  isolation:isolate; overflow:hidden; background:var(--sky);
+  max-height:100vh;
+}
+@media (min-width:1600px){ .hero{ max-height:900px; } }
+
+.hero-slides{ position:absolute; inset:0; overflow:hidden; z-index:var(--z-hero-slides); }
+.hero-slide{ position:absolute; inset:0; margin:0; opacity:0; transition:opacity 900ms var(--ease); will-change:opacity; }
+.hero-slide.is-active{ opacity:1; }
+.hero-slide picture, .hero-slide img{
+  width:100%; height:100%; display:block; object-fit:cover; object-position:center;
 }
 
-/* --- NEU: Slideshow layer im Hero (liegt unter Content) --- */
-.hero-slides{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  z-index:0;
-}
-.hero-slide{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  transition:opacity 900ms ease;
-  will-change:opacity;
-  margin: 0;              /* <— wichtig: Figure-Ränder weg! */
-}
-
-.hero-slide.is-active{opacity:1}
-
-.hero-slide img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-}
-
-/* bisherige Hero-Image-Selektoren bleiben unkritisch */
-.hero > picture,
-.hero > img{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero > picture > img,
-.hero > img{width:100%;height:100%;object-fit:cover;object-position:center}
-
+/* Verlauf unten für Lesbarkeit */
 .hero::after{
-  content:"";position:absolute;inset-inline:0;inset-block-end:0;height:24%;
+  content:""; position:absolute; inset-inline:0; inset-block-end:0; height:24%;
   background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.85) 100%);
-  pointer-events:none;z-index:1
+  pointer-events:none; z-index:1;
 }
+
+/* Overlay-Content mittig */
 .hero-content{
-  position:relative;z-index:2;height:100%;
-  display:grid;place-items:center;          /* mittig */
-  padding:0 1rem;text-align:center;color:#1b2a2f
+  position:relative; z-index:2; height:100%;
+  display:grid; place-items:center; padding:0 1rem; text-align:center; color:#1b2a2f;
 }
 
-/* Hero-Logo */
-.hero-logo {
-  display: block;
-  margin-inline: auto;
-  width: clamp(140px, 28vw, 320px);
-  height: auto;
-  margin-bottom: 1.1rem;
-  filter:
-    drop-shadow(0 3px 8px rgba(0,0,0,0.85))
-    drop-shadow(0 10px 28px rgba(0,0,0,0.7));
+/* Hero-Logo (mit Drop-Shadow) */
+.hero-logo{
+  display:block; margin-inline:auto; height:auto;
+  width:clamp(140px, 28vw, 320px); margin-bottom:1.1rem;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.85)) drop-shadow(0 10px 28px rgba(0,0,0,.7));
 }
+@media (min-width:900px){ .hero-logo{ width:clamp(220px,24vw,380px); margin-bottom:1.2rem; } }
+@media (min-width:1400px){ .hero-logo{ width:clamp(300px,22vw,460px); margin-bottom:1.25rem; } }
+@media (max-width:480px){ .hero-logo{ width:clamp(170px,42vw,260px); margin-bottom:.8rem; } }
 
-/* Mittel: ab ~900px etwas großzügiger */
-@media (min-width: 900px) {
-  .hero-logo {
-    width: clamp(220px, 24vw, 380px);
-    margin-bottom: 1.2rem;
-  }
-}
+.kicker{ font-weight:600; letter-spacing:.12em; font-size:.9rem; text-transform:uppercase; color:#faefef; text-shadow:0 2px 24px rgba(9,9,9,.8); }
+.hero h1{ color:#faefef; text-shadow:0 2px 24px rgba(17,16,16,.8); }
+.cta-row{ margin-top:1.2rem; display:inline-flex; gap:.7rem; flex-wrap:wrap; }
 
-/* Groß: ab ~1400px */
-@media (min-width: 1400px) {
-  .hero-logo {
-    width: clamp(300px, 22vw, 460px);
-    margin-bottom: 1.25rem;
-  }
+/* Hero-Navigation (Pfeile + Dots) */
+.hero-nav{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
+  padding-inline:10px; z-index:var(--z-hero-ui); pointer-events:none;
 }
-/* Klein */
-@media (max-width: 480px) {
-  .hero-logo {
-    width: clamp(110px, 28vw, 200px);
-    margin-bottom: 1rem;
-  }
+.hero-arrow{
+  pointer-events:auto; display:grid; place-items:center;
+  width:56px; height:56px; border-radius:50%;
+  background:rgba(0,0,0,.35); backdrop-filter:blur(4px);
+  color:#fff; font-size:28px; cursor:pointer; border:none;
+  transition:background .2s var(--ease), transform .2s var(--ease);
 }
+.hero-arrow:hover{ background:rgba(0,0,0,.55); transform:scale(1.05); }
+.hero-arrow:focus-visible{ outline:3px solid rgba(255,255,255,.8); outline-offset:2px; }
+@media (hover:hover){ .hero-arrow{ opacity:.85; } .hero:hover .hero-arrow{ opacity:1; } }
+@media (max-width:600px){ .hero-arrow{ width:48px; height:48px; font-size:24px; } }
 
-/* ===== Hero Pfeile ===== */
-.hero-nav {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 10px;
-  z-index: 3; /* über Slides & Verlauf, unter Content passt auch, aber so sind sie klickbar */
-  pointer-events: none; /* Container durchlässig, Buttons selbst bekommen Events */
+/* Hero-Dots (Glass-Stil) */
+.hero-dots{
+  position:absolute; left:50%; bottom:26px; transform:translateX(-50%);
+  display:flex; gap:10px; z-index:4; padding:6px 10px;
+  border-radius:999px; background:rgba(0,0,0,.22);
+  backdrop-filter:blur(6px) saturate(120%); border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
 }
-.hero-arrow {
-  pointer-events: auto;
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(4px);
-  color: #fff;
-  font-size: 28px;
-  cursor: pointer;
-  border: none;
-  transition: background .2s ease, transform .2s ease;
+.hero-dot{
+  width:10px; height:10px; border-radius:50%;
+  background:rgba(255,255,255,.75); border:1px solid rgba(0,0,0,.2);
+  cursor:pointer; transition: transform .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease), opacity .18s var(--ease);
 }
-.hero-arrow:hover {
-  background: rgba(0,0,0,0.55);
-  transform: scale(1.05);
+.hero-dot:hover{ transform:scale(1.15); }
+.hero-dot[aria-current="true"]{
+  background:var(--sea); border-color:rgba(255,255,255,.95);
+  box-shadow:0 0 0 3px rgba(255,255,255,.35), 0 6px 18px rgba(0,0,0,.35);
 }
-.hero-arrow:focus-visible { outline: 3px solid rgba(255,255,255,.8); outline-offset: 2px; }
+@media (max-width:600px){ .hero-dot{ width:12px; height:12px; } }
 
-/* Desktop: Pfeile leicht „discreet“ zeigen – erst bei Hover richtig sichtbar */
-@media (hover:hover) {
-  .hero-arrow { opacity: .85; }
-  .hero:hover .hero-arrow { opacity: 1; }
-}
-
-/* Mobile: größere Touch-Ziele */
-@media (max-width: 600px) {
-  .hero-arrow { width: 48px; height: 48px; font-size: 24px; }
-}
-
-.kicker{font-weight:600;letter-spacing:.12em;font-size:.9rem;text-transform:uppercase;opacity:1;color:#faefef;text-shadow:0 2px 24px rgba(9,9,9,.8)}
-.hero h1{color:#faefef;text-shadow:0 2px 24px rgba(17,16,16,.8)}
-.cta-row{margin-top:1.2rem;display:inline-flex;gap:.7rem;flex-wrap:wrap}
-
-/* =========================
-   Sections
-   ========================= */
-section{padding:clamp(40px,7vw,92px) 0}
+/* =========================================================
+   Sektionen / Karten / Galerie
+   ========================================================= */
+section{ padding:clamp(40px,7vw,92px) 0; }
 
 /* Intro / USPs */
-.intro{background:var(--white)}
-.intro .lead{font-size:clamp(18px,2.4vw,20px);max-width:60ch;opacity:.9}
-.usp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
-.card{background:linear-gradient(180deg,#fff,#fffdfb);border:1px solid rgba(0,0,0,.06);border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow)}
-.card h3{margin-bottom:.4rem}
-.muted{opacity:.85}
+.intro{ background:var(--white); }
+.intro .lead{ font-size:clamp(18px,2.4vw,20px); max-width:60ch; opacity:.9; }
+.usp-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:2rem; }
+.card{ background:linear-gradient(180deg,#fff,#fffdfb); border:1px solid rgba(0,0,0,.06); border-radius:var(--radius); padding:1.2rem; box-shadow:var(--shadow); }
+.card h3{ margin-bottom:.4rem; }
+.muted{ opacity:.85; }
 
-/* =========================
-   Galerie
-   ========================= */
-.gallery{background:linear-gradient(180deg,var(--white),#f9fbfc)}
-.grid{columns:3 320px;column-gap:1rem}
-.grid figure{break-inside:avoid;margin:0 0 1rem;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff}
-.grid img{width:100%;height:auto;display:block}
-.grid figcaption{padding:.6rem .8rem;font-size:.9rem;opacity:.9}
+/* Galerie (Masonry über CSS-Spalten) */
+.gallery{ background:linear-gradient(180deg,var(--white),#f9fbfc); }
+.grid{ columns:3 320px; column-gap:1rem; }
+.grid figure{ break-inside:avoid; margin:0 0 1rem; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:#fff; }
+.grid img{ width:100%; height:auto; display:block; }
+.grid figcaption{ padding:.6rem .8rem; font-size:.9rem; opacity:.9; }
 
-/* =========================
-   Callout / Kontakt
-   ========================= */
-.callout{background:linear-gradient(135deg,var(--olivetr),var(--olive))}
-.callout .panel{
-  background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);
-  display:grid;gap:.8rem;text-align:center
-}
-
-/* =========================
-   Footer
-   ========================= */
-footer{padding:36px 0;background:#fafafa;border-top:1px solid rgba(0,0,0,.06);font-size:.95rem}
-.footer-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.brand{display:inline-flex;align-items:center;gap:.6rem}
-.brand img{display:block}
-
-/* =========================
-   Reveal Animation + Reduced Motion
-   ========================= */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
-@media (prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-}
-
-/* =========================
-   Responsive Tweaks
-   ========================= */
-@media (max-width:900px){
-  .usp-grid{grid-template-columns:1fr}
-  .cslogo{height:48px}
-
-  /* Toggle sichtbar, Links als Dropdown */
-  .nav-toggle{display:inline-flex}
-
-  .nav-links[hidden]{display:none !important;}
-
-  .nav-links{
-    position:fixed;
-    inset-inline:0;
-    inset-block-start:64px; /* ~Header-Höhe; bei Bedarf anpassen */
-    background:rgba(255,255,255,.95);
-    backdrop-filter:blur(6px);
-    border-top:1px solid rgba(0,0,0,.06);
-    box-shadow:0 12px 24px rgba(0,0,0,.08);
-    display:grid;
-    gap:.6rem;
-    padding:1rem;
-    z-index:999;
-  }
-  .nav-links a{
-    padding:.7rem 1rem;
-    border-radius:10px;
-    font-weight:600;
-  }
-  .nav-links a:hover{background:rgba(0,0,0,.04)}
-}
-
-@media (max-width:600px){
-  .nav{grid-template-columns:1fr auto 1fr}
-  .hero::after{height:32%} /* etwas stärkerer Verlauf für Lesbarkeit */
-}
-
-/* ===== Hero Dots (Brand-Mix Glass Style) ===== */
-.hero-dots {
-  position: absolute;
-  left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 4;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(6px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-
-.hero-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform .18s ease,
-              background .18s ease,
-              box-shadow .18s ease,
-              opacity .18s ease;
-}
-
-.hero-dot:hover {
-  transform: scale(1.15);
-}
-
-/* Aktiver Dot = deine Brand-Farbe */
-.hero-dot[aria-current="true"] {
-  background: var(--sea); /* z.B. dein Blau */
-  border-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35),
-              0 6px 18px rgba(0, 0, 0, 0.35);
-}
-
-/* Mobile: größere Trefferfläche */
-@media (max-width: 600px) {
-  .hero-dot {
-    width: 12px;
-    height: 12px;
-  }
-}
-
-/* ========== Mobile (bis 480px) ========== */
-@media (max-width: 480px) {
-  .hero-logo {
-    width: clamp(170px, 42vw, 260px);
-    margin-bottom: 0.8rem;
-  }
-  .hero h1 {
-    font-size: clamp(26px, 7vw, 32px);
-    line-height: 1.2;
-  }
-  .hero .cta-row {
-    gap: 0.5rem;
-  }
-  .hero .cta-row .btn {
-    padding: 0.55rem 0.9rem;
-    font-size: 0.95rem;
-  }
-}
-
-/* ========== Tablet (481px – 899px) ========== */
-@media (min-width: 481px) and (max-width: 899px) {
-  .hero-logo {
-    width: clamp(200px, 35vw, 300px);
-    margin-bottom: 1rem;
-  }
-  .hero h1 {
-    font-size: clamp(30px, 6vw, 42px);
-    line-height: 1.25;
-  }
-  .hero .cta-row {
-    gap: 0.75rem;
-  }
-  .hero .cta-row .btn {
-    padding: 0.65rem 1.1rem;
-    font-size: 1rem;
-  }
-}
-
-/* ========== Desktop (ab 900px) ========== */
-@media (min-width: 900px) {
-  .hero-logo {
-    width: clamp(240px, 24vw, 380px);
-    margin-bottom: 1.1rem;
-  }
-  .hero h1 {
-    font-size: clamp(36px, 5vw, 52px);
-    line-height: 1.3;
-  }
-  .hero .cta-row {
-    gap: 1rem;
-  }
-  .hero .cta-row .btn {
-    padding: 0.75rem 1.3rem;
-    font-size: 1.05rem;
-  }
-}
-
-/* ========== Hero: maximale Höhe für große Screens ========== */
-.hero {
-  max-height: 100vh; /* nie höher als die Viewport-Höhe */
-  overflow: hidden;
-}
-
-/* Ab sehr großen Monitoren (>1600px) den Hero etwas begrenzen */
-@media (min-width: 1600px) {
-  .hero {
-    max-height: 900px; /* z.B. 900px, wirkt ruhiger */
-  }
-}
-
-/* Hero picture layer (falls <picture> statt <img> verwendet wird) */
-.hero-slide picture,
-.hero-slide img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* WICHTIG für full-bleed: Figure-Default-Margins neutralisieren */
-.hero-slide { margin: 0; }
-
-/* ===== 1) Header transparent: Links & Burger weiß, beim Scroll wieder dunkel ===== */
-
-/* Transparent (oben auf dem Hero) */
-.site-header:not(.scrolled) { color: #fff; }               /* <- Quelle für 'inherit' */
-.site-header:not(.scrolled) .nav a { color: inherit; }     /* Links werden weiß */
-.site-header:not(.scrolled) .nav-toggle { color: #fff; }   /* Burger-Icon wird weiß */
-.site-header:not(.scrolled) .nav-toggle-bar,
-.site-header:not(.scrolled) .nav-toggle-bar::before,
-.site-header:not(.scrolled) .nav-toggle-bar::after { background: currentColor; }
-
-/* Gescrollt (heller Header mit Blur): wieder deine Standardtextfarbe */
-.site-header.scrolled { color: var(--stone); }
-.site-header.scrolled .nav a { color: inherit; }
-.site-header.scrolled .nav-toggle { color: var(--stone); }
-
-/* WICHTIG: Mobile-Dropdown hat weißen Hintergrund -> dort dunkle Schrift erzwingen */
-@media (max-width: 900px) {
-  .site-header .nav-links { color: var(--stone); }
-}
-
-/* ==== Galerie-Kachel (Bild füllt Kachel, Dots im Bild, Caption darunter) ==== */
-
-/* Figure selbst: kein Weiß, nur Layout */
-.card-figure{
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  display: flex;
-  flex-direction: column;
-  gap: .6rem;             /* Abstand Bild → Caption */
-}
-
-/* Bildbereich */
+/* Galerie-Kachel mit Slider (Bild füllt komplett, Dots im Bild, Caption darunter) */
+.card-figure{ margin:0; padding:0; background:none; border:0; box-shadow:none; display:flex; flex-direction:column; gap:.6rem; }
 .tile-slider{
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;   /* deine Fotos sind 16:9 */
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  background: transparent; /* kein „weißer Container“-Look */
+  position:relative; width:100%; aspect-ratio:16/9;
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:transparent;
 }
-
-/* Slides füllen den Bildbereich vollständig */
 .tile-slider > .tile-slide{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  opacity: 0;
-  transition: opacity .3s ease;
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center; display:block;
+  opacity:0; transition:opacity var(--t-base) var(--ease);
 }
-.tile-slider > .tile-slide.is-active{ opacity: 1; }
+.tile-slider > .tile-slide.is-active{ opacity:1; }
 
-/* Pfeile */
 .tile-arrow{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  width: 34px; height: 34px;
-  display: grid; place-items: center;
-  border: 0; border-radius: 999px;
-  background: rgba(0,0,0,.35);
-  color: #fff;
-  cursor: pointer;
-  transition: background .2s ease;
+  position:absolute; top:50%; transform:translateY(-50%);
+  z-index:2; width:34px; height:34px; display:grid; place-items:center;
+  border:0; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; cursor:pointer; transition:background .2s var(--ease);
 }
-.tile-arrow:hover{ background: rgba(0,0,0,.5); }
-.tile-prev{ left: 8px; }
-.tile-next{ right: 8px; }
+.tile-arrow:hover{ background:rgba(0,0,0,.5); }
+.tile-prev{ left:8px; } .tile-next{ right:8px; }
 
-/* Dots unten im Bild */
 .tile-dots{
-  position: absolute;
-  left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  padding: 4px 7px;
-  border-radius: 999px;
-  background: rgba(0,0,0,.25);
-  backdrop-filter: blur(3px);
-  border: 1px solid rgba(255,255,255,.18);
-  z-index: 3;
+  position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+  display:flex; gap:8px; padding:4px 7px; border-radius:999px;
+  background:rgba(0,0,0,.25); backdrop-filter:blur(3px); border:1px solid rgba(255,255,255,.18);
+  z-index:3;
 }
 .tile-dot{
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.7);
-  border: 1px solid rgba(0,0,0,.2);
-  cursor: pointer;
-  transition: transform .15s ease, background .15s ease;
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.2);
+  cursor:pointer; transition:transform .15s var(--ease), background .15s var(--ease);
 }
-.tile-dot:hover{ transform: scale(1.15); }
-.tile-dot[aria-current="true"]{
-  background: var(--sea);
-  border-color: rgba(255,255,255,.9);
-}
+.tile-dot:hover{ transform:scale(1.15); }
+.tile-dot[aria-current="true"]{ background:var(--sea); border-color:rgba(255,255,255,.9); }
 
-/* Beschriftung unter dem Bild – nüchtern im Fließtextstil */
-.tile-caption-text{
-  margin: 0;
-  color: var(--stone);
-  font-size: 1rem;
-  line-height: 1.4;
-  background: none;
-  padding: 0;
-  text-align: left;
-}
+.tile-caption-text{ margin:0; color:var(--stone); font-size:1rem; line-height:1.4; background:none; padding:0; text-align:left; }
 
-/* Touch-Ziele auf Mobile etwas größer */
 @media (max-width:600px){
-  .tile-arrow{ width: 40px; height: 40px; }
-  .tile-dot{ width: 10px; height: 10px; }
+  .tile-arrow{ width:40px; height:40px; }
+  .tile-dot{ width:10px; height:10px; }
+}
+
+/* =========================================================
+   Callout / Kontakt
+   ========================================================= */
+.callout{ background:linear-gradient(135deg,var(--olivetr),var(--olive)); }
+.callout .panel{
+  background:rgba(255,255,255,.7); backdrop-filter:blur(6px); border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius); padding:clamp(18px,3vw,28px); box-shadow:var(--shadow);
+  display:grid; gap:.8rem; text-align:center;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+footer{ padding:36px 0; background:#fafafa; border-top:1px solid rgba(0,0,0,.06); font-size:.95rem; }
+.footer-row{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.brand{ display:inline-flex; align-items:center; gap:.6rem; }
+.brand img{ display:block; }
+
+/* =========================================================
+   Reveal-Animation + „Bewegung reduzieren“
+   ========================================================= */
+.reveal{ opacity:0; transform:translateY(12px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.in{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion:reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+}
+
+/* =========================================================
+   Responsive Navigation (Mobil)
+   ========================================================= */
+@media (max-width:900px){
+  .usp-grid{ grid-template-columns:1fr; }
+  .cslogo{ height:48px; }
+
+  .nav-toggle{ display:inline-flex; }
+
+  .nav-links[hidden]{ display:none !important; }
+  .nav-links{
+    position:fixed; inset-inline:0; inset-block-start:64px;
+    background:rgba(255,255,255,.95); backdrop-filter:blur(6px);
+    border-top:1px solid rgba(0,0,0,.06); box-shadow:0 12px 24px rgba(0,0,0,.08);
+    display:grid; gap:.6rem; padding:1rem; z-index:999;
+    opacity:0; transform:translateY(-6px); pointer-events:none;
+    transition:opacity .22s var(--ease), transform .22s var(--ease);
+  }
+  /* Transparenter Header → Menü ebenfalls transparent/weiß */
+  .site-header:not(.scrolled) .nav-links{
+    background:rgba(255,255,255,.08); color:#fff;
+    backdrop-filter:none; border-top-color:transparent; box-shadow:none;
+  }
+  .site-header:not(.scrolled) .nav-links a{
+    background:rgba(0,0,0,.35); color:#fff; padding:.7rem 1rem; border-radius:10px; font-weight:600;
+    transition:background .15s var(--ease), transform .18s var(--ease);
+  }
+  .site-header:not(.scrolled) .nav-links a:hover{ background:rgba(0,0,0,.22); }
+
+  /* Geöffnet-Zustand (per JS) */
+  .nav-links[data-open="true"], .nav-links[open], .nav-links:not([hidden]){
+    opacity:1; transform:translateY(0); pointer-events:auto;
+  }
+
+  .nav-links a{ padding:.7rem 1rem; border-radius:10px; font-weight:600; }
+  .nav-links a:hover{ background:rgba(0,0,0,.04); }
+}
+
+@media (max-width:600px){
+  .nav{ grid-template-columns:1fr auto 1fr; }
+  .hero::after{ height:32%; } /* stärkerer Verlauf für Lesbarkeit */
+}
+
+/* Desktop: transparente Header-Links diskret hinterlegen */
+@media (min-width:900px){
+  .site-header:not(.scrolled) .nav .nav-links a{
+    background:rgba(0,0,0,.12); color:#fff; padding:.6rem .9rem; border-radius:10px;
+    transition:background .15s var(--ease), transform .12s var(--ease);
+  }
+  .site-header:not(.scrolled) .nav .nav-links a:hover{
+    background:rgba(0,0,0,.22); transform:translateY(-1px);
+  }
+  .site-header.scrolled .nav .nav-links a:hover{ background:rgba(0,0,0,.04); }
+  .site-header.scrolled .nav .nav-links a{
+    padding:.6rem .9rem; border-radius:10px; display:inline-flex; align-items:center; justify-content:center;
+    transition:background .15s var(--ease), transform .12s var(--ease);
+  }
 }
